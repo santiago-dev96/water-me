@@ -1,56 +1,63 @@
-from flask import Flask, request, url_for
-from markupsafe import escape
+import os
+from db import init_db, close_db
+from flask import Flask, request, render_template, flash, redirect, url_for, session
+from security import check_credentials, sign_in_required, sign_up
 
 app = Flask(__name__)
 
+if os.getenv('INIT_DB') == 'True':
+    init_db(app)
+
 @app.route('/')
-def hello_world():
-    return '<p>Hello, World!</p>'
+@sign_in_required
+def index():
+    return render_template('index.html')
 
-@app.route('/hello')
-def hello():
-    name = request.args.get('name', 'Flask')
-    return f'Hello, {escape(name)}'
+@app.route('/sign_in', methods=['GET', 'POST'])
+def sign_in():
+    """Signs in or prompts for credentials"""
 
-@app.route('/user/<username>')
-def show_user_profile(username):
-    # show the user profile for that user
-    return f'User {escape(username)}'
+    # Render the sign-in form.
 
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the id is an integer
-    return f'Post {post_id}'
+    if request.method == 'GET':
+        return render_template('sign_in.html')
+    
+    # Signs in the user if the credentials are correct.
 
-@app.route('/path/<path:subpath>')
-def show_subpath(subpath):
-    # showt he subpath after /path/
-    return f'Subpath {escape(subpath)}'
+    session.clear()
+    id = check_credentials(request.form.get('usename'), request.form.get('password'))
+    if not id:
+        flash('Invalid credentials', 'error')
+        return render_template('sign_in.html'), 401
+    session['user_id'] = id
+    flash('You are signed in!', 'success')
+    if 'redirect_to' in request.args:
+        return redirect(request.args['redirect_to'])
+    return redirect(url_for('index'))
 
-@app.route('/projects/')
-def projects():
-    return 'The project page'
 
-@app.route('/about')
-def about():
-    return 'The about page'
+@app.route('/sign_up', methods=['GET', 'POST'])
+def sign_up():
+    """Signs up a user or prompts for new credentials"""
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         return 'login the user'
-#     else:
-#         return 'show login form'
+    # Render the sign-up form.
 
-@app.get('/login')
-def login_get():
-    return 'show login form'
+    if request.method == 'GET':
+        return render_template('sign_up.html')
+    
+    # Register the new user in the database.
 
-@app.post('/login')
-def login_post():
-    return 'login the user'
+    username = request.form.get('username')
+    password = request.form.get('password')
+    password_confirmation = request.form.get('password_confirmation')
+    try:
+        session['user_id'] = sign_up(username, password, password_confirmation)
+    except ValueError as e:
+        app.logger.error(e)
+        flash('Could not sign you up', 'error')
+        return render_template('sign_up.html'), 400
+    return redirect(url_for('index'))
 
-with app.test_request_context():
-    print(url_for('projects'))
-    print(url_for('about'))
-    print(url_for('show_user_profile', username='jimmy'))
+@app.teardown_appcontext
+def close_connection(exception):
+    close_db()
