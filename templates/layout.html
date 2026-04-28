@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <!-- Common tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+
+    <!-- Page title -->
+    <title>Water me! | {% block title %}{% endblock %}</title>
+
+    <!-- Per page scripts, should be deferred. -->
+    {% block scripts %}{% endblock %}
+
+  </head>
+
+  <body>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    
+    {% if messages %}
+
+    <div class="alert alert-{{ messages[0][1] }}" role="alert">
+      {{ messages[0][0] }}
+    </div>
+
+    {% endif %}
+
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+      &copy; Copyright 2026 by <a href="#">me</a>
+    </footer>
+
+  </body>
+
+</html>
