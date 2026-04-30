@@ -2,3 +2,4 @@
 .vscode
 .env
 .local_data
+__pycache__
