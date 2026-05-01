@@ -3,17 +3,21 @@
 <html lang="en">
 
   <head>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
-    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-
     <!-- Common tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
 
+    <!-- The favicon! -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+
+    <!-- Global styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='global.css') }}">
+
+    <!-- Whatever styles the user wants for the page. -->
+    {% block styles %}{% endblock %}
+
     <!-- Page title -->
-    <title>Water me! | {% block title %}{% endblock %}</title>
+    <title>Water me! {% block title %}{% endblock %}</title>
 
     <!-- Per page scripts, should be deferred. -->
     {% block scripts %}{% endblock %}
@@ -21,6 +25,15 @@
   </head>
 
   <body>
+
+    <header>
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img width="100" src="{{ url_for('static', filename='logo.png') }}" alt="The app logo: Water me!">
+      </a>
+
+      <p>Did you water your plant?</p>
+    </header>
+
 
     {% with messages = get_flashed_messages(with_categories=True) %}
     
@@ -36,9 +49,13 @@
 
     {% block content %}{% endblock %}
 
-    <footer>
-      &copy; Copyright 2026 by <a href="#">me</a>
-    </footer>
+    {% if 'user_id' in session %}
+
+    <form id="logout" method="POST" action="{{ url_for('sign_out') }}">
+      <button type="submit">Sign out</button>
+    </form>
+
+    {% endif %}
 
   </body>
 

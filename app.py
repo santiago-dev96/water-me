@@ -184,6 +184,14 @@ def sign_up():
     return redirect(url_for("index"))
 
 
+@app.route("/sign_out")
+def sign_out():
+    """Signs out the user."""
+
+    session.clear()
+    return redirect(url_for("sign_in"))
+
+
 @app.teardown_appcontext
 def close_connection(exception):
     if db:

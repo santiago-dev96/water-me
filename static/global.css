@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Jersey10';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./Jersey10-Regular.ttf') format('truetype');
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Jersey10', monospace;
+}
+
+body {
+  min-height: 100vh;
+}
+
+body > header {
+  display: flex;
+  align-items: flex-start;
+}
+
+body > header p {
+  font-size: 32px;
+  margin-left: 16px;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+button {
+  font-family: 'Jersey10', monospace;
+}
+
+#logout {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
+#logout button {
+  font-size: 24px;
+}
