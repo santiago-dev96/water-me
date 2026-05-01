@@ -184,7 +184,7 @@ def sign_up():
     return redirect(url_for("index"))
 
 
-@app.route("/sign_out")
+@app.route("/sign_out", methods=["POST"])
 def sign_out():
     """Signs out the user."""
 
