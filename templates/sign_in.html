@@ -16,7 +16,7 @@ Sign in
 {% block content %}
 
 <main>
-  <form method="POST" action="{{ url_for('sign_in') }}" class="form" id="sign-in-form">
+  <form method="POST" action="{{ url_for('sign_in') }}" class="form auth-form">
     <div style="margin-bottom: 1.5rem;">
       <label for="username" class="label-full">Username (email)</label>
       <input autocomplete="username" type="email" name="username" id="username" class="input input-full">
