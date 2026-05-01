@@ -12,7 +12,9 @@
 :root {
   --bg-color: white;
   --text-color: black;
+  --text-error-color: red;
   --link-color: blue;
+  --surface-color: lightgray;
 }
 
 html {
@@ -24,7 +26,7 @@ input {
   font-family: inherit;
 }
 
-p, button, label {
+p, button, label, .alert {
   font-size: 3rem;
 }
 
@@ -58,4 +60,20 @@ button {
   position: fixed;
   bottom: 24px;
   right: 24px;
+}
+
+.alert {
+  border-width: 0.5rem;
+  border-style: outset;
+  padding: 2rem;
+  background-color: var(--surface-color);
+}
+
+.alert-danger::before {
+  content: 'ERROR!';
+  color: var(--text-error-color);
+}
+
+#flash-msg {
+  margin-top: 3rem;
 }
