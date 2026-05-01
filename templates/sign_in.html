@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 
+{% block styles %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forms.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='sign_in.css') }}">
+
+{% endblock %}
+
 {% block title %}
 
 Sign in
@@ -8,20 +15,22 @@ Sign in
 
 {% block content %}
 
-<form method="POST" action="{{ url_for('sign_in') }}">
-  <div>
-    <label for="username">Username (email)</label>
-    <input type="email" name="username" id="username">
-  </div>
+<main>
+  <form method="POST" action="{{ url_for('sign_in') }}" class="form" id="sign-in-form">
+    <div style="margin-bottom: 1.5rem;">
+      <label for="username" class="label-full">Username (email)</label>
+      <input autocomplete="username" type="email" name="username" id="username" class="input input-full">
+    </div>
 
-  <div>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password">
-  </div>
+    <div>
+      <label for="password" class="label-full">Password</label>
+      <input class="input input-full" autocomplete="current-password" type="password" name="password" id="password">
+    </div>
 
-  <button type="submit">Sign in</button>
-</form>
+    <button style="margin-top: 4rem;" type="submit" class="submit-btn">Sign in</button>
+  </form>
+</main>
 
-<p>Don't have an account? <a href="{{ url_for('sign_up') }}">Sign up now</a>!</p>
+<p id="no-account">Don't have an account? <a href="{{ url_for('sign_up') }}">Sign up now</a>!</p>
 
 {% endblock %}

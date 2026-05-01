@@ -9,11 +9,31 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg-color: white;
+  --text-color: black;
+  --link-color: blue;
+}
+
 html {
   font-family: 'Jersey10', monospace;
+  font-size: 8px;
+}
+
+input {
+  font-family: inherit;
+}
+
+p, button, label {
+  font-size: 3rem;
+}
+
+a, a:visited {
+  color: var(--link-color);
 }
 
 body {
+  background-color: var(--bg-color);
   min-height: 100vh;
 }
 
@@ -22,23 +42,20 @@ body > header {
   align-items: flex-start;
 }
 
-body > header p {
-  font-size: 32px;
+body > header h1 {
+  font-size: 6rem;
   margin-left: 16px;
-  margin-top: 16px;
+  margin-top: 24px;
   margin-bottom: 0;
+  font-weight: 400;
 }
 
 button {
-  font-family: 'Jersey10', monospace;
+  font-family: inherit;
 }
 
 #logout {
   position: fixed;
   bottom: 24px;
   right: 24px;
-}
-
-#logout button {
-  font-size: 24px;
 }
