@@ -1,63 +1,190 @@
-import os
-from db import init_db, close_db
-from flask import Flask, request, render_template, flash, redirect, url_for, session
-from security import check_credentials, sign_in_required, sign_up
+from flask import Flask, request, render_template, flash, redirect, url_for, session, g
+import sqlite3
+from werkzeug.security import generate_password_hash
+from werkzeug.local import LocalProxy
+import re
+from functools import wraps
+
+# We initalize the app.
 
 app = Flask(__name__)
 
-if os.getenv('INIT_DB') == 'True':
-    init_db(app)
+# We update the app configuration from the environment variables.
 
-@app.route('/')
+app.config.from_prefixed_env()
+
+# Configure the database connection, SQLite by the way.
+
+
+def get_db():
+    if "db" not in g:
+        g.db = sqlite3.connect(app.config["DB_PATH"])
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+
+db = LocalProxy(get_db)
+
+# If the INIT_DB configuration is passed, we run the script
+# with the database schema. When the environment variable
+# is "True" then the app configuration value will become
+# 1.
+
+if app.config.get("INIT_DB") == 1:
+    with app.app_context():
+        with app.open_resource("schema.sql", mode="r") as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+
+
+def sign_in_required(f):
+    """Decorator for routes that require a valid session."""
+
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        user_id = session.get("user_id")
+        if not user_id:
+            return redirect(
+                url_for("sign_in", values={"redirect_to": request.full_path})
+            )
+        else:
+            cursor = db.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+            rows = cursor.fetchall()
+            cursor.close()
+            if len(rows) != 1:
+                session.clear()
+                return redirect(
+                    url_for("sign_in", values={"redirect_to": request.full_path})
+                )
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+@app.route("/")
 @sign_in_required
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/sign_in', methods=['GET', 'POST'])
+
+@app.route("/sign_in", methods=["GET", "POST"])
 def sign_in():
     """Signs in or prompts for credentials"""
 
     # Render the sign-in form.
 
-    if request.method == 'GET':
-        return render_template('sign_in.html')
-    
+    if request.method == "GET":
+        return render_template("sign_in.html")
+
     # Signs in the user if the credentials are correct.
 
+    # We clear the session first.
+
     session.clear()
-    id = check_credentials(request.form.get('usename'), request.form.get('password'))
-    if not id:
-        flash('Invalid credentials', 'error')
-        return render_template('sign_in.html'), 401
-    session['user_id'] = id
-    flash('You are signed in!', 'success')
-    if 'redirect_to' in request.args:
-        return redirect(request.args['redirect_to'])
-    return redirect(url_for('index'))
+
+    # And now we validate the credentials.
+
+    username = request.form.get("username")
+    if not username:
+        flash("Missing username", "error")
+        return render_template("sign_in.html"), 400
+    password = request.form.get("password")
+    if not password:
+        flash("Missing password", "error")
+        return render_template("sign_in.html"), 400
+
+    # Now try to get the user and update the session.
+
+    cursor = db.execute(
+        "SELECT * FROM users WHERE username = ? AND password_hash = ?",
+        (username, generate_password_hash(password)),
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+    if len(rows) > 1:
+        flash("Internal server error", "error")
+        return render_template("sign_in.html")
+    elif len(rows) == 0:
+        flash("Invalid credentials", "error")
+        return render_template("sign_in.html"), 401
+    user = rows[0]
+    session["user_id"] = user["id"]
+    flash("You are signed in!", "success")
+    if "redirect_to" in request.args:
+        return redirect(request.args["redirect_to"])
+    return redirect(url_for("index"))
 
 
-@app.route('/sign_up', methods=['GET', 'POST'])
+# Thanks Copilot. This is a regular expression to validate email addresses.
+
+email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+
+
+@app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     """Signs up a user or prompts for new credentials"""
 
     # Render the sign-up form.
 
-    if request.method == 'GET':
-        return render_template('sign_up.html')
-    
-    # Register the new user in the database.
+    if request.method == "GET":
+        return render_template("sign_up.html")
 
-    username = request.form.get('username')
-    password = request.form.get('password')
-    password_confirmation = request.form.get('password_confirmation')
-    try:
-        session['user_id'] = sign_up(username, password, password_confirmation)
-    except ValueError as e:
-        app.logger.error(e)
-        flash('Could not sign you up', 'error')
-        return render_template('sign_up.html'), 400
-    return redirect(url_for('index'))
+    # Get the username, strip the whitespace and validate it.
+
+    username = request.form.get("username")
+    if not username:
+        flash("The username is required", "error")
+        return render_template("sign_up.html"), 400
+    username = username.strip()
+    if not re.fullmatch(email_regex, username):
+        flash("Only email addresses can be used as usernames", "error")
+        return render_template("sign_up.html"), 400
+
+    # Get the password, it should contain at least 1 digit, 1 letter,
+    # a special character and that the password confirmation is equal
+    # to the given password.
+
+    password = request.form.get("password")
+    if not password:
+        flash("The password is required", "error")
+        return render_template("sign_up.html"), 400
+    if not re.search(r"\d", password):
+        flash("The password must have at least one number", "error")
+        return render_template("sign_up.html"), 400
+    if not re.search(r"[a-z]", password):
+        flash("The password must have at least one lowercase letter", "error")
+        return render_template("sign_up.html"), 400
+    if not re.search(r"[A-Z]", password):
+        flash("The password must have at least one uppercase letter", "error")
+        return render_template("sign_up.html"), 400
+    if not re.search(r"[^a-zA-Z0-9\s]", password):
+        flash("The password must have at least one special character", "error")
+        return render_template("sign_up.html"), 400
+    password_confirmation = request.form.get("password_confirmation")
+    if not password_confirmation:
+        flash("The password confirmation is required", "error")
+        return render_template("sign_up.html"), 400
+    if password != password_confirmation:
+        flash("The password and the password confirmation must be equal", " error")
+        return render_template("sign_up.html"), 400
+
+    # Now save the user in the database.
+
+    cursor = db.execute(
+        "INSERT INTO users (username, password_hash) VALUES (?, ?)",
+        (username, generate_password_hash(password)),
+    )
+    db.commit()
+    user_id = cursor.lastrowid
+    cursor.close()
+
+    # And start a session for the user.
+    session["user_id"] = user_id
+
+    return redirect(url_for("index"))
+
 
 @app.teardown_appcontext
 def close_connection(exception):
-    close_db()
+    if db:
+        db.close()

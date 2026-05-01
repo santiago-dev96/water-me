@@ -8,7 +8,7 @@ Register
 
 {% block content %}
 
-<form method="POST" action="{{ url_for('register') }}">
+<form method="POST" action="{{ url_for('sign_up') }}">
   <div>
     <label for="username">Username (email)</label>
     <input type="email" name="username" id="username">
@@ -24,7 +24,7 @@ Register
     <input type="password" name="password_confirmation" id="password_confirmation">
   </div>
 
-  <button type="submit">Register</button>
+  <button type="submit">Sign up</button>
 </form>
 
 {% endblock %}
