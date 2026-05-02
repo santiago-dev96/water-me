@@ -148,6 +148,12 @@ def sign_up():
     if not password:
         flash("The password is required", "danger")
         return render_template("sign_up.html"), 400
+    if len(password) < 12:
+        flash("The lenght of the password must be at least 12 characters", "danger")
+        return render_template("sign_up.html"), 400
+    if len(password > 32):
+        flash("The length of the password must be at most 32 characters", "danger")
+        return render_template("sign_up.html"), 400
     if not re.search(r"\d", password):
         flash("The password must have at least one number", "danger")
         return render_template("sign_up.html"), 400
