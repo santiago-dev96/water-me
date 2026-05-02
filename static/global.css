@@ -13,6 +13,7 @@
   --bg-color: white;
   --text-color: black;
   --text-error-color: red;
+  --text-success-color: limegreen;
   --link-color: blue;
   --surface-color: lightgray;
 }
@@ -72,6 +73,11 @@ button {
 .alert-danger::before {
   content: 'ERROR!';
   color: var(--text-error-color);
+}
+
+.alert-success::before {
+  content: 'SUCCESS!';
+  color: var(--text-success-color);
 }
 
 #flash-msg {
