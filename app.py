@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, flash, redirect, url_for, session, g
 import sqlite3
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.local import LocalProxy
 import re
 from functools import wraps
@@ -96,8 +96,8 @@ def sign_in():
     # Now try to get the user and update the session.
 
     cursor = db.execute(
-        "SELECT * FROM users WHERE username = ? AND password_hash = ?",
-        (username, generate_password_hash(password)),
+        "SELECT * FROM users WHERE username = ?",
+        (username,),
     )
     rows = cursor.fetchall()
     cursor.close()
@@ -108,6 +108,9 @@ def sign_in():
         flash("Invalid credentials", "danger")
         return render_template("sign_in.html"), 401
     user = rows[0]
+    if not check_password_hash(user["password_hash"], password):
+        flash("Invalid credentials", "danger")
+        return render_template("sign_in.html"), 401
     session["user_id"] = user["id"]
     flash("You are signed in!", "success")
     if "redirect_to" in request.args:
