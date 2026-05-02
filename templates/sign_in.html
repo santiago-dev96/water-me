@@ -19,12 +19,12 @@ Sign in
   <form method="POST" action="{{ url_for('sign_in') }}" class="form auth-form">
     <div style="margin-bottom: 1.5rem;">
       <label for="username" class="label-full">Username (email)</label>
-      <input autocomplete="username" type="email" name="username" id="username" class="input input-full">
+      <input autocomplete="username" type="email" name="username" id="username" class="input input-full" required>
     </div>
 
     <div>
       <label for="password" class="label-full">Password</label>
-      <input class="input input-full" autocomplete="current-password" type="password" name="password" id="password">
+      <input class="input input-full" autocomplete="current-password" type="password" name="password" id="password" required minlength="12">
     </div>
 
     <button style="margin-top: 4rem;" type="submit" class="submit-btn">Sign in</button>
