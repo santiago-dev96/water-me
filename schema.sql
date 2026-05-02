@@ -1,5 +1,6 @@
 DROP INDEX IF EXISTS email_idx;
 DROP TABLE IF EXISTS users;
+DELETE TABLE IF EXISTS plants;
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
@@ -8,3 +9,10 @@ CREATE TABLE users (
 );
 
 CREATE UNIQUE INDEX email_idx ON users(username);
+
+CREATE TABLE plants (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    name TEXT NOT NULL,
+    times_it_was_watered INTEGER NOT NULL DEFAULT 0
+);
