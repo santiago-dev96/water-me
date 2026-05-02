@@ -4,6 +4,12 @@
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forms.css') }}">
 
+<style>
+  #already-have-account {
+    text-align: center;
+  }
+</style>
+
 {% endblock %}
 
 {% block title %}
@@ -33,6 +39,8 @@ Register
 
     <button style="margin-top: 4rem;" type="submit" class="submit-btn" type="submit">Sign up</button>
   </form>
+
+  <p id="already-have-account">Already have an account? <a href="{{ url_for('sign_in') }}">Sign in!</a></p>
 </main>
 
 {% endblock %}
