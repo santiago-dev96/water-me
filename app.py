@@ -87,7 +87,10 @@ def index():
             f"Zero or one plants were expected but instead got {len(rows)}"
         )
         abort(500)
-    plant = rows[0]
+    if len(rows) == 0:
+        plant = None
+    else:
+        plant = rows[0]
     return render_template("index.html", plant=plant)
 
 
