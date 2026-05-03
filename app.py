@@ -1,4 +1,14 @@
-from flask import Flask, request, render_template, flash, redirect, url_for, session, g
+from flask import (
+    Flask,
+    request,
+    render_template,
+    flash,
+    redirect,
+    url_for,
+    session,
+    g,
+    abort,
+)
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.local import LocalProxy
@@ -65,7 +75,29 @@ def sign_in_required(f):
 @app.route("/")
 @sign_in_required
 def index():
-    return render_template("index.html")
+    """Shows the plant status, but if you have none then a CTA."""
+
+    # The the user plant. One per user, for now.
+
+    cursor = db.execute("SELECT * FROM plants WHERE user_id = ?", (session["user_id"],))
+    rows = cursor.fetchall()
+    cursor.close()
+    if len(rows) not in range(1):
+        app.logger.error(
+            f"Zero or one plants were expected but instead got {len(rows)}"
+        )
+        abort(500)
+    plant = rows[0]
+    return render_template("index.html", plant=plant)
+
+
+@app.route("/add_plant", methods=["GET", "POST"])
+@sign_in_required
+def add_plant():
+    """Shows a form to create a new plant and also saves the plant data."""
+
+    if request.method == "GET":
+        return render_template("add_plant.html")
 
 
 @app.route("/sign_in", methods=["GET", "POST"])
@@ -200,6 +232,11 @@ def sign_out():
 
     session.clear()
     return redirect(url_for("sign_in"))
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template("internal_server_error.html"), 500
 
 
 @app.teardown_appcontext
