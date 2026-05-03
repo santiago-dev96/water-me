@@ -14,5 +14,6 @@ CREATE TABLE plants (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     name TEXT NOT NULL,
+    picture_filename TEXT NOT NULL,
     times_it_was_watered INTEGER NOT NULL DEFAULT 0
 );
