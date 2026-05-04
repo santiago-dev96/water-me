@@ -102,6 +102,9 @@ def add_plant():
     if request.method == "GET":
         return render_template("add_plant.html")
 
+    app.logger.debug("not implemented")
+    return redirect(url_for("index"))
+
 
 @app.route("/sign_in", methods=["GET", "POST"])
 def sign_in():
@@ -190,7 +193,7 @@ def sign_up():
     if len(password) < 12:
         flash("The lenght of the password must be at least 12 characters", "danger")
         return render_template("sign_up.html"), 400
-    if len(password > 32):
+    if len(password) > 32:
         flash("The length of the password must be at most 32 characters", "danger")
         return render_template("sign_up.html"), 400
     if not re.search(r"\d", password):
