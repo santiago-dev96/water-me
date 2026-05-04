@@ -10,9 +10,8 @@
     <!-- The favicon! -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 
-    <!-- Bootstrap 5.3.8 -->
+    <!-- Bootstrap 5.3.8 CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
-    <script src="{{ url_for('static', filename='bootstrap.min.js') }}" defer></script>
 
     <!-- Page title -->
     <title>Water me! {% block title %}{% endblock %}</title>
@@ -50,6 +49,9 @@
     </form>
 
     {% endif %}
+
+    <!-- Bootstrap 5.3.8 scripts with Popper.js -->
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
 
   </body>
 
