@@ -184,7 +184,8 @@ def sign_up():
 
     # Get the password, it should contain at least 1 digit, 1 letter,
     # a special character and that the password confirmation is equal
-    # to the given password.
+    # to the given password. The length of the password should be
+    # at least 12 and at most 32.
 
     password = request.form.get("password")
     if not password:
