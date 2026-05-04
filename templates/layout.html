@@ -10,11 +10,9 @@
     <!-- The favicon! -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 
-    <!-- Global styles -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='global.css') }}">
-
-    <!-- Whatever styles the user wants for the page. -->
-    {% block styles %}{% endblock %}
+    <!-- Bootstrap 5.3.8 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 
     <!-- Page title -->
     <title>Water me! {% block title %}{% endblock %}</title>
