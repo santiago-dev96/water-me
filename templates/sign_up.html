@@ -1,17 +1,5 @@
 {% extends "layout.html" %}
 
-{% block styles %}
-
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forms.css') }}">
-
-<style>
-  #already-have-account {
-    text-align: center;
-  }
-</style>
-
-{% endblock %}
-
 {% block title %}
 
 Register
@@ -21,26 +9,26 @@ Register
 {% block content %}
 
 <main>
-  <form method="POST" action="{{ url_for('sign_up') }}" class="form auth-form">
-    <div style="margin-bottom: 1.5rem;">
-      <label class="label-full" for="username">Username (email)</label>
-      <input class="input input-full" type="email" name="username" id="username">
-    </div>
-
-    <div style="margin-bottom: 1.5rem;">
-      <label class="label-full" for="password">Password</label>
-      <input class="input input-full" type="password" name="password" id="password">
+  <form method="POST" action="{{ url_for('sign_up') }}">
+    <div>
+      <label for="username">Username (email)</label>
+      <input type="email" name="username" id="username" required>
     </div>
 
     <div>
-      <label class="label-full" for="password_confirmation">Password confirmation</label>
-      <input class="input input-full" type="password" name="password_confirmation" id="password_confirmation">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required minlength="12" maxlength="32">
     </div>
 
-    <button style="margin-top: 4rem;" type="submit" class="submit-btn" type="submit">Sign up</button>
+    <div>
+      <label for="password_confirmation">Password confirmation</label>
+      <input type="password" name="password_confirmation" id="password_confirmation" required minlength="12" maxlength="32">
+    </div>
+
+    <button type="submit">Sign up</button>
   </form>
 
-  <p id="already-have-account">Already have an account? <a href="{{ url_for('sign_in') }}">Sign in!</a></p>
+  <p>Already have an account? <a href="{{ url_for('sign_in') }}">Sign in!</a></p>
 </main>
 
 {% endblock %}
