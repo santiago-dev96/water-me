@@ -8,27 +8,31 @@ Register
 
 {% block content %}
 
-<main>
-  <form method="POST" action="{{ url_for('sign_up') }}">
-    <div>
-      <label for="username">Username (email)</label>
-      <input type="email" name="username" id="username" required>
+<main class="row">
+  <h1 class="mb-4 col-12 text-center">Please setup your account</h1>
+
+  <form method="POST" action="{{ url_for('sign_up') }}" class="p-4 col-12">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username (email)</label>
+      <input type="email" name="username" id="username" required class="form-control">
     </div>
 
-    <div>
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" required minlength="12" maxlength="32">
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
     </div>
 
-    <div>
-      <label for="password_confirmation">Password confirmation</label>
-      <input type="password" name="password_confirmation" id="password_confirmation" required minlength="12" maxlength="32">
+    <div class="mb-4">
+      <label for="password_confirmation" class="form-label">Password confirmation</label>
+      <input type="password" name="password_confirmation" id="password_confirmation" required minlength="12" maxlength="32" class="form-control">
     </div>
 
-    <button type="submit">Sign up</button>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Sign up</button>
+    </div>
   </form>
 
-  <p>Already have an account? <a href="{{ url_for('sign_in') }}">Sign in!</a></p>
+  <p class="mt-4 text-center">Already have an account? <a href="{{ url_for('sign_in') }}">Sign in!</a></p>
 </main>
 
 {% endblock %}
