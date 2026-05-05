@@ -8,22 +8,26 @@ Sign in
 
 {% block content %}
 
-<main>
-  <form method="POST" action="{{ url_for('sign_in') }}">
-    <div>
-      <label for="username">Username (email)</label>
-      <input autocomplete="username" type="email" name="username" id="username" required>
+<main class="row">
+  <h1 class="col-12 text-center mb-4">Please sign in</h1>
+
+  <form method="POST" action="{{ url_for('sign_in') }}" class="col-12 p-4">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username (email)</label>
+      <input autocomplete="username" type="email" name="username" id="username" required class="form-control">
     </div>
 
-    <div>
-      <label for="password">Password</label>
-      <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32">
+    <div class="mb-4">
+      <label for="password" class="form-label">Password</label>
+      <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
     </div>
 
-    <button style="margin-top: 4rem;" type="submit">Sign in</button>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
   </form>
 </main>
 
-<p>Don't have an account? <a href="{{ url_for('sign_up') }}">Sign up now!</a></p>
+<p class="mt-4 text-center">Don't have an account? <a href="{{ url_for('sign_up') }}">Sign up now!</a></p>
 
 {% endblock %}
