@@ -51,13 +51,6 @@
 
       {% block content %}{% endblock %}
 
-      {% if 'user_id' in session %}
-
-      <form method="POST" action="{{ url_for('sign_out') }}">
-        <button type="submit">Sign out</button>
-      </form>
-
-      {% endif %}
     </div>
 
     <!-- Bootstrap 5.3.8 scripts with Popper.js -->
