@@ -176,11 +176,11 @@ def sign_up():
     username = request.form.get("username")
     if not username:
         flash("The username is required", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     username = username.strip()
     if not re.fullmatch(email_regex, username):
         flash("Only email addresses can be used as usernames", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
 
     # Get the password, it should contain at least 1 digit, 1 letter,
     # a special character and that the password confirmation is equal
@@ -190,32 +190,32 @@ def sign_up():
     password = request.form.get("password")
     if not password:
         flash("The password is required", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if len(password) < 12:
         flash("The length of the password must be at least 12 characters", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if len(password) > 32:
         flash("The length of the password must be at most 32 characters", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if not re.search(r"\d", password):
         flash("The password must have at least one number", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if not re.search(r"[a-z]", password):
         flash("The password must have at least one lowercase letter", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if not re.search(r"[A-Z]", password):
         flash("The password must have at least one uppercase letter", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if not re.search(r"[^a-zA-Z0-9\s]", password):
         flash("The password must have at least one special character", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     password_confirmation = request.form.get("password_confirmation")
     if not password_confirmation:
         flash("The password confirmation is required", "danger")
-        return render_template("sign_up.html"), 400
+        return render_template("sign_up.html", form=request.form), 400
     if password != password_confirmation:
-        flash("The password and the password confirmation must be equal", " danger")
-        return render_template("sign_up.html"), 400
+        flash("The password and the password confirmation must be equal", "danger")
+        return render_template("sign_up.html", form=request.form), 400
 
     # Now save the user in the database.
 
@@ -238,6 +238,7 @@ def sign_out():
     """Signs out the user."""
 
     session.clear()
+    flash("You are signed out", "info")
     return redirect(url_for("sign_in"))
 
 

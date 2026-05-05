@@ -14,17 +14,45 @@ Register
   <form method="POST" action="{{ url_for('sign_up') }}" class="p-4 col-12">
     <div class="mb-3">
       <label for="username" class="form-label">Username (email)</label>
+
+      {% if form %}
+      
+      <input value="{{ form.get('username', '') }}" type="email" name="username" id="username" required class="form-control">
+
+      {% else %}
+
       <input type="email" name="username" id="username" required class="form-control">
+
+      {% endif %}
     </div>
 
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
+      
+      {% if form %}
+
+      <input value="{{ form.get('password', '') }}" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
+
+      {% else %}
+
       <input type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
+
+      {% endif %}
     </div>
 
     <div class="mb-4">
       <label for="password_confirmation" class="form-label">Password confirmation</label>
+
+      {% if form %}
+
+      <input value="{{ form.get('password_confirmation', '') }}" type="password" name="password_confirmation" 
+      id="password_confirmation" required minlength="12" maxlength="32" class="form-control">
+
+      {% else %}
+
       <input type="password" name="password_confirmation" id="password_confirmation" required minlength="12" maxlength="32" class="form-control">
+
+      {% endif %}
     </div>
 
     <div class="d-grid">
