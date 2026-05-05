@@ -8,6 +8,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
 
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
     <!-- Bootstrap 5.3.8 CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
 
@@ -23,7 +29,9 @@
     <nav class="navbar navbar-expand-lg sticky-top bg-light" data-bs-theme="light">
       <div class="container">
 
-        <a class="navbar-brand" href="{{ url_for('index') }}">WATER ME!</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+          <img height="36" class="image-fluid" src="{{ url_for('static', filename='water_me_logo_for_nav.svg') }}" alt="Water me! The name of the app">
+        </a>
 
         {% if 'user_id' in session %}
 
