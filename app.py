@@ -12,8 +12,11 @@ from flask import (
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.local import LocalProxy
+from werkzeug.utils import secure_filename
 import re
 from functools import wraps
+import os
+from uuid import uuid4
 
 # We initalize the app.
 
@@ -46,6 +49,19 @@ if app.config.get("INIT_DB") == 1:
         with app.open_resource("schema.sql", mode="r") as f:
             db.cursor().executescript(f.read())
         db.commit()
+
+# We now  configure the variables for file storage, the plant
+# pictures.
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
+
+# We also limit the file upload size to 3 MB.
+
+app.config["MAX_CONTENT_LENGTH"] = 3 * 1000 * 1000
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def sign_in_required(f):
@@ -102,8 +118,22 @@ def add_plant():
     if request.method == "GET":
         return render_template("add_plant.html")
 
-    app.logger.debug("not implemented")
-    return redirect(url_for("index"))
+    if "file" not in request.files:
+        flash("No plant picture file given", "danger")
+        return render_template("add_plant.html", 400)
+    file = request.files["file"]
+    if file.filename == "":
+        flash("No plant picture file given", "danger")
+        return render_template("add_plant.html"), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_extension = filename.rsplit(".", 1)[1].lower()
+        file.save(
+            os.path.join(
+                app.config["IMAGE_UPLOADS_PATH"], f"{uuid4()}.{file_extension}"
+            )
+        )
+        return redirect(url_for("index"))
 
 
 @app.route("/sign_in", methods=["GET", "POST"])
