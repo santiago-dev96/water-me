@@ -22,6 +22,7 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
+
 def init_db():
     db = get_db()
 
@@ -39,6 +40,7 @@ def init_db_command():
 sqlite3.register_converter(
     "timestamp", lambda v: datetime.fromisoformat(v.decode())
 )
+
 
 def init_app(app):
     app.teardown_appcontext(close_db)
