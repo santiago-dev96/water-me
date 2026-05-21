@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta charset="utf-8">
+
+    <!-- Bootstrap 5.3.8 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <title>Water me! Page not found</title>
+
+    <link href="{{ url_for('static', filename='error.css') }}" rel="stylesheet" type="text/css">
+
+  </head>
+
+  <body>
+
+    <h1>Page not found :&lpar;</h1>
+
+    <p>The page you are looking for does not exist. <a href="{{ url_for('plants.index') }}">Go back home</a>.</p>
+
+  </body>
+
+</html>
