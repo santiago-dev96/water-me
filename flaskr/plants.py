@@ -62,7 +62,7 @@ def add_plant():
         file_extension = filename.rsplit(".", 1)[1].lower()
         file.save(
             os.path.join(
-                current_app.config["IMAGE_UPLOADS_PATH"], f"{uuid4()}.{file_extension}"
+                current_app.config["IMAGES"], f"{uuid4()}.{file_extension}"
             )
         )
         return redirect(url_for("plants.index"))
