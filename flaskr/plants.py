@@ -24,7 +24,7 @@ def index():
     cursor = db.execute("SELECT * FROM plants WHERE user_id = ?", (user_id,))
     rows = cursor.fetchall()
     cursor.close()
-    if len(rows) not in range(1):
+    if len(rows) not in range(2):
         bp.logger.error(
             f"Zero or one plants were expected but instead got {len(rows)}"
         )
