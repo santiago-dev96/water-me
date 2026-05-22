@@ -2,11 +2,33 @@
 
 {% block title %}
 
+{% if plant %}
+{{ plant["name"] }}
+{% else %}
 Homepage
+{% endif %}
 
 {% endblock %}
 
 {% block content %}
+
+{% if plant %}
+
+<main class="row mt-5">
+  <div class="col-12 mb-4">
+    <h1 class="text-center mb-0">{{ plant["name"] }}</h1>
+  </div>
+
+  <div class="col-10 offset-1 text-center">
+    <img src="{{ url_for('plants.plant_image', filename=plant['picture_filename']) }}" class="img-fluid rounded mb-4" alt="{{ plant['name'] }}">
+  </div>
+
+  <div class="col-10 offset-1">
+    <p class="mb-4">Times watered: {{ plant["times_it_was_watered"] }}</p>
+  </div>
+</main>
+
+{% else %}
 
 <main class="row mt-5">
   <div class="col-12 mb-4">
@@ -24,5 +46,7 @@ Homepage
   </div>
 
 </main>
+
+{% endif %}
 
 {% endblock %}

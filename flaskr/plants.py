@@ -10,6 +10,7 @@ from flask import (
     url_for,
     abort,
     current_app,
+    send_from_directory,
 )
 from werkzeug.utils import secure_filename
 from uuid import uuid4
@@ -47,6 +48,21 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route("/plant_image/<filename>")
+@sign_in_required
+def plant_image(filename):
+    db = get_db()
+    cursor = db.execute(
+        "SELECT id FROM plants WHERE picture_filename = ? AND user_id = ?",
+        (filename, g.user["id"]),
+    )
+    row = cursor.fetchone()
+    cursor.close()
+    if row is None:
+        abort(403)
+    return send_from_directory(current_app.config["IMAGES"], filename)
 
 
 @bp.route("/add_plant", methods=["GET", "POST"])
