@@ -50,10 +50,10 @@ def add_plant():
     if request.method == "GET":
         return render_template("plants/add_plant.html")
 
-    if "file" not in request.files:
+    if "picture" not in request.files:
         flash("No plant picture file given", "danger")
         return render_template("plants/add_plant.html"), 400
-    file = request.files["file"]
+    file = request.files["picture"]
     if file.filename == "":
         flash("No plant picture file given", "danger")
         return render_template("plants/add_plant.html"), 400
