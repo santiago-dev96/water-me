@@ -10,7 +10,14 @@ Cultivation plots
 
 <main>
 
-  <h1 class="text-center mb-4">Cultivation plots</h1>
+  <figure>
+    <blockquote class="blockquote">
+      <p>Agriculture looks different now than it did three generations ago. The farmer of the future will not be someone who works with their hands, but someone who directs technology to work for them.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">Norman Borlaug, Nobel Laureate and father of the Green Revolution.</figcaption>
+  </figure>
+
+  <h1 class="mt-5 mb-4">Your cultivation plots</h1>
 
   {% if not cultivation_plots or cultivation_plots|length == 0 %}
   
@@ -25,6 +32,10 @@ Cultivation plots
   {% else %}
 
   <div class="row row-cols-1">
+
+    <div class="col mb-3">
+      <a href="{{ url_for('cultivation_plots.new_cultivation_plot') }}" class="btn btn-primary">Create</a>
+    </div>
 
     {% for cultivation_plot in cultivation_plots %}
 
