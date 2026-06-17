@@ -14,14 +14,54 @@ Cultivation plots
 
   {% if not cultivation_plots or cultivation_plots|length == 0 %}
   
-    <p class="mb-4">It looks like there are no cultivation plots to show here.</p>
+  <p class="mb-4">It looks like there are no cultivation plots to show here.</p>
 
-    <div class="d-grid">
-      <a class="btn btn-primary" href="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
-        Create a cultivation plot
-      </a>
-    </div>
+  <div class="d-grid">
+    <a class="btn btn-primary" href="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
+      Create a cultivation plot
+    </a>
   </div>
+
+  {% else %}
+
+  <div class="row row-cols-1">
+
+    {% for cultivation_plot in cultivation_plots %}
+
+    <div class="col border rounded p-3">
+      <div class="row">
+        {# An image of a cube that rotates #}
+        <div class="col-4">
+          <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
+          
+          <img class="img-fluid my-1" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from the soil">
+
+          <div class="text-success fw-bold text-center fs-6">Active</div>
+        </div>
+      
+        <div class="col-8 d-flex flex-column justify-content-between">
+          <div>
+            <div>Carrot</div>
+            <div>{{ cultivation_plot.water_spent }} lts of water spent</div>
+            <div>X plants sown</div>
+            <div>X harvested products</div>
+          </div>
+          
+          {# The actions #}
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary">Inspect</button>
+            <button class="btn btn-outline-primary">Edit</button>
+            <button class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+      
+    {% endfor %}
+
+  </div>
+  
 
   {% endif %}
 
