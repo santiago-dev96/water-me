@@ -9,19 +9,19 @@ Register
 {% block content %}
 
 <main class="row mt-5">
-  <h1 class="mb-4 col-12 text-center">Please setup your account</h1>
+  <h1 class="mb-4 col-12 text-center">Create an account</h1>
 
-  <form method="POST" action="{{ url_for('auth.sign_up') }}" class="p-4 col-12">
+  <form method="POST" action="{{ url_for('auth.register') }}" class="p-4 col-12">
     <div class="mb-3">
-      <label for="username" class="form-label">Username (email)</label>
+      <label for="username" class="form-label">Username</label>
 
       {% if form %}
 
-      <input value="{{ form.get('username', '') }}" type="email" name="username" id="username" required class="form-control">
+      <input value="{{ form.get('username', '') }}" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
 
       {% else %}
 
-      <input type="email" name="username" id="username" required class="form-control">
+      <input type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
 
       {% endif %}
     </div>
@@ -56,11 +56,12 @@ Register
     </div>
 
     <div class="d-grid">
-      <button type="submit" class="btn btn-primary">Sign up</button>
+      <button type="submit" class="btn btn-primary">Register</button>
     </div>
   </form>
 
-  <p class="mt-4 text-center">Already have an account? <a href="{{ url_for('auth.sign_in') }}">Sign in!</a></p>
+  <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login instead</a>.</p>
+
 </main>
 
 {% endblock %}

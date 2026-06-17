@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+Login
+
+{% endblock %}
+
+{% block content %}
+
+<main class="row p-5">
+  <h1 class="col-12 text-center mb-4">Welcome back</h1>
+
+  <form method="POST" action="{{ url_for('auth.login') }}" class="col-12 p-4">
+    <div class="mb-3">
+      <label for="password" class="form-label">Username</label>
+      <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </form>
+
+  <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register instead</a>.</p>
+</main>
+
+{% endblock %}

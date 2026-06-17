@@ -1,6 +1,6 @@
-DROP INDEX IF EXISTS email_idx;
+DROP INDEX IF EXISTS username_idx;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS plants;
+DROP TABLE IF EXISTS cultivation_plots;
 
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
@@ -8,12 +8,11 @@ CREATE TABLE users (
     password_hash TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX email_idx ON users(username);
+CREATE UNIQUE INDEX username_idx ON users(username);
 
-CREATE TABLE plants (
+CREATE TABLE cultivation_plots (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     name TEXT NOT NULL,
-    picture_filename TEXT NOT NULL,
-    times_it_was_watered INTEGER NOT NULL DEFAULT 0
+    water_spent INTEGER NOT NULL DEFAULT 0
 );

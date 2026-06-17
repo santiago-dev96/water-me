@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta charset="utf-8">
+
+    <!-- Bootstrap 5.3.8 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
+
+    <title>CultiCore > {% block tab_title %}{% endblock %}</title>
+
+  </head>
+
+  <body>
+
+    <h1>{% block title %}{% endblock %}</h1>
+
+    <p>{% block text %}{% endblock %}</p>
+
+    <!-- Bootstrap 5.3.8 scripts with Popper.js -->
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+  </body>
+
+</html>

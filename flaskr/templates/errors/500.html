@@ -1,29 +1,19 @@
-<!DOCTYPE html>
+{% extends "errors/layout.html" %}
 
-<html lang="en">
+{% block tab_title %}
 
-  <head>
+Something went wrong
 
-    <meta name="viewport" content="initial-scale=1, width=device-width">
-    <meta charset="utf-8">
+{% endblock %}
 
-    <!-- Bootstrap 5.3.8 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" type="text/css">
-    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+{% block title %}
 
-    <title>Water me! Something went wrong</title>
+Our server is not feeling well :&lpar;
 
-    <link href="{{ url_for('static', filename='error.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
 
-  </head>
+{% block text %}
 
-  <body>
+Go back <a href="{{ url_for('cultivation_plots.index') }}">to the dashboard</a>.</a>
 
-    <h1>Our server is not feeling well :&lpar;</h1>
-
-    <p>Please have a little patience and <a href="{{ url_for('plants.index') }}"></a>try again.</a></p>
-
-  </body>
-
-</html>
-
+{% endblock %}
