@@ -35,7 +35,8 @@ def new_cultivation_plot():
         return render_template("cultivation_plots/new_cultivation_plot.html", form=request.form), 400
     
     db = get_db()
-    cursor = db.execute('INSERT INTO cultivation_plots (name) VALUES (?)', (name,))
+    user_id = g.user['id']
+    cursor = db.execute('INSERT INTO cultivation_plots (name, user_id) VALUES (?, ?)', (name, user_id))
     cursor.close()
     db.commit()
 
