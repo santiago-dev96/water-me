@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, g, render_template, request, abort
+    Blueprint, g, render_template, request, flash, redirect, url_for
 )
 
 from flaskr.db import get_db
@@ -28,5 +28,15 @@ def new_cultivation_plot():
 
     if request.method == "GET":
         return render_template("cultivation_plots/new_cultivation_plot.html")
+    
+    name = request.form.get('name')
+    if not name:
+        flash('The name of the plot is required', 'danger')
+        return render_template("cultivation_plots/new_cultivation_plot.html", form=request.form), 400
+    
+    db = get_db()
+    cursor = db.execute('INSERT INTO cultivation_plots (name) VALUES (?)', (name,))
+    cursor.close()
+    db.commit()
 
-    abort(500)
+    return redirect(url_for('cultivation_plots.index'))
