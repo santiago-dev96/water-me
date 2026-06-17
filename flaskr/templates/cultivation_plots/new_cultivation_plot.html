@@ -8,13 +8,25 @@ New cultivation plot
 
 {% block content %}
 
-<main class="row mt-5">
-  <h1 class="text-center mb-0 col-12">Create a cultivation plot</h1>
+<main>
+  <h1 class="text-center mb-4">Create a cultivation plot</h1>
 
-  <form enctype="multipart/form-data" method="POST" action="{{ url_for('cultivation_plots.new_cultivation_plot') }}" class="col-12 p-4 mt-4">
+  <div class="w-25 mx-auto mb-4">
+    <img class="img-fluid" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from a cube of dirt">
+  </div>
+  
+
+  <form class="border rounded p-4" method="POST" action="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
     <div class="mb-3">
       <label class="form-label" for="name">Name</label>
       <input class="form-control" type="text" name="name" id="name" required>
+      <div id="name-help" class="form-text">To help you identify the plot.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="name">Crop</label>
+      <input class="form-control" type="text" name="name" id="name" required>
+      <div id="crop-help" class="form-text">Carrot, banana, potato, tomato, etc.</div>
     </div>
 
     <div class="d-grid">
