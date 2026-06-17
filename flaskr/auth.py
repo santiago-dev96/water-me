@@ -155,7 +155,7 @@ def logout():
 
     session.clear()
     flash("You're logged out", "info")
-    return redirect(url_for("auth.logout"))
+    return redirect(url_for("auth.login"))
 
 
 def login_required(view):
