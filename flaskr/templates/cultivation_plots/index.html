@@ -12,9 +12,8 @@ Cultivation plots
 
   <h1 class="text-center mb-4">Cultivation plots</h1>
 
-  {% if not cultivation_plots or len(cultivation_plots) == 0 %}
+  {% if not cultivation_plots or cultivation_plots|length == 0 %}
   
-  <div class="col-10 offset-1">
     <p class="mb-4">It looks like there are no cultivation plots to show here.</p>
 
     <div class="d-grid">
