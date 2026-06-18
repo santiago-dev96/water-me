@@ -38,19 +38,31 @@ Cultivation plots
           <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
           
           <img class="img-fluid my-1" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from the soil">
-
-          <div class="text-success fw-bold text-center fs-6">Active</div>
         </div>
       
-        <div class="col-8 d-flex flex-column justify-content-between">
+        <div class="col-8 d-flex flex-column">
           <div>
-            <div>Carrot</div>
-            <div>{{ cultivation_plot.water_spent }} lts of water spent</div>
-            <div>X plants sown</div>
-            <div>X harvested products</div>
+            <div class="fst-italic mb-2">{{ cultivation_plot.crop }}</div>
+            
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Plants</th>
+                  <td>{{ cultivation_plot.number_of_plants }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Water spent (L)</th>
+                  <td>{{ cultivation_plot.water_spent }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Harvest (kg)</th>
+                  <td>{{ cultivation_plot.harvest }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           
-          <div class="row gx-1">
+          <div class="row gx-1 mt-3">
             <div class="col">
               <a href="#" aria-label="Go to the new metrics page" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">

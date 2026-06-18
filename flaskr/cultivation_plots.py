@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, g, render_template, request, flash, redirect, url_for
+    Blueprint, g, render_template, request, flash, redirect, url_for, current_app
 )
 
 from flaskr.db import get_db
@@ -34,9 +34,28 @@ def new_cultivation_plot():
         flash('The name of the plot is required', 'danger')
         return render_template("cultivation_plots/new_cultivation_plot.html", form=request.form), 400
     
+    crop = request.form.get('crop')
+    if not crop:
+        flash('The crop is required', 'danger')
+        return render_template("cultivation_plots/new_cultivation_plot.html", form=request.form), 400
+    
+    number_of_plants = request.form.get('number-of-plants')
+    if not number_of_plants:
+        number_of_plants = 0
+    else:
+        bad_value_msg = f'Received a bad value for the number of plants: {number_of_plants}'
+        try:
+            number_of_plants = int(number_of_plants)
+            if number_of_plants < 0:
+                current_app.logger.info(bad_value_msg)
+                number_of_plants = 0
+        except ValueError:
+            current_app.logger.info(bad_value_msg)
+            number_of_plants = 0
+    
     db = get_db()
     user_id = g.user['id']
-    cursor = db.execute('INSERT INTO cultivation_plots (name, user_id) VALUES (?, ?)', (name, user_id))
+    cursor = db.execute('INSERT INTO cultivation_plots (name, crop, number_of_plants, user_id) VALUES (?, ?, ?, ?)', (name, crop, number_of_plants, user_id))
     cursor.close()
     db.commit()
 

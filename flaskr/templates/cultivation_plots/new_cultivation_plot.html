@@ -18,15 +18,21 @@ New cultivation plot
 
   <form class="border rounded p-4" method="POST" action="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
     <div class="mb-3">
-      <label class="form-label" for="name">Name</label>
+      <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
       <input class="form-control" type="text" name="name" id="name" required>
       <div id="name-help" class="form-text">To help you identify the plot.</div>
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="name">Crop</label>
-      <input class="form-control" type="text" name="name" id="name" required>
+      <label class="form-label" for="crop">Crop <span class="text-danger">*</span></label>
+      <input class="form-control" type="text" name="crop" id="crop" required>
       <div id="crop-help" class="form-text">Carrot, banana, potato, tomato, etc.</div>
+    </div>
+
+    <div class="mb-5">
+      <label class="form-label" for="number-of-plants">Number of plants</label>
+      <input class="form-control" type="number" min="0" name="number-of-plants" id="number-of-plants" value="0">
+      <div id="name-help" class="form-text">How many plants does the plot have?</div>
     </div>
 
     <div class="d-grid">

@@ -14,5 +14,8 @@ CREATE TABLE cultivation_plots (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users(id),
     name TEXT NOT NULL,
-    water_spent INTEGER NOT NULL DEFAULT 0
+    crop TEXT NOT NULL,
+    number_of_plants INTEGER NOT NULL DEFAULT 0,
+    water_spent REAL NOT NULL DEFAULT 0,
+    harvest REAL NOT NULL DEFAULT 0
 );
