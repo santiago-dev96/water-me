@@ -42,7 +42,7 @@ Cultivation plots
           <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
         </div>
       
-        <div class="col-8 d-flex flex-column">
+        <div class="col-8 d-flex flex-column align-items-end justify-content-between">
           <table class="table table-sm">
             <tbody>
               <tr>
@@ -60,31 +60,7 @@ Cultivation plots
             </tbody>
           </table>
           
-          <div class="row gx-1 mt-3">
-            <div class="col">
-              <a href="#" aria-label="Go to the new metrics page" class="btn btn-primary">
-                {% include "svgs/plus_icon.html" %}
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" aria-label="Go to the stats page" class="btn btn-secondary">
-                {% include "svgs/bar_chart_icon.html" %}
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" aria-label="Go to the edit page" class="btn btn-secondary">
-                {% include "svgs/pen_icon.html" %}
-              </a>
-            </div>
-            
-            <div class="col">
-              <a href="#" aria-label="Delete the cultivation plot" class="btn btn-danger">
-                {% include "svgs/trash_icon.html" %}
-              </a>
-            </div>
-          </div>
+          <a href="#">View details</a>
         </div>
 
       </div>
