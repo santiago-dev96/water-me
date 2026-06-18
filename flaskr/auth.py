@@ -125,8 +125,8 @@ def login():
     some_user = cursor.fetchone()
     cursor.close()
     if not some_user:
-        flash("There is no user account in the database with the given username", "danger")
-        return render_template("auth/register.html"), 500
+        flash("Invalid username", "danger")
+        return render_template("auth/login.html"), 500
     if not check_password_hash(some_user["password_hash"], password):
         flash("Invalid password", "danger")
         return render_template("auth/login.html"), 401
