@@ -29,16 +29,46 @@
           CultiCore
         </a>
 
-        <form class="d-flex ms-auto" method="POST" action="{{ url_for('auth.logout') }}">
-          <button type="submit" class="btn btn-secondary btn-sm">Sign out</button>
-        </form>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler" aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar-toggler">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {% if request.endpoint == 'cultivation_plots.index' %}
+                <a class="nav-link active" aria-current="page" href="{{ url_for('cultivation_plots.index') }}">Dashboard</a>
+              {% else %}
+                <a class="nav-link" aria-current="page" href="{{ url_for('cultivation_plots.index') }}">Dashboard</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if request.endpoint == 'cultivation_plots.new_cultivation_plot' %}
+                <a class="nav-link active" href="{{ url_for('cultivation_plots.new_cultivation_plot') }}">New cultivation plot</a>
+              {% else %}
+                <a class="nav-link" href="{{ url_for('cultivation_plots.new_cultivation_plot') }}">New cultivation plot</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Documentation</a>
+            </li>
+          </ul>
+
+          <form class="d-flex" method="POST" action="{{ url_for('auth.logout') }}">
+            <button type="submit" class="btn btn-secondary btn-sm">
+              {% include "svgs/exit.html" %}
+              <span>&nbsp;Sign out</span>
+            </button>
+          </form>
+          
+        </div>
 
       </div>
     </nav>
 
     {% endif %}
 
-    <div class="container mt-3 p-4">
+    <div class="container mt-4 p-4">
       {% with messages = get_flashed_messages(with_categories=True) %}
 
       {% if messages %}
