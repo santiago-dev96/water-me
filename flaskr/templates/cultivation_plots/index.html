@@ -13,7 +13,7 @@ Cultivation plots
   <h1 class="mb-5 text-center">Your cultivation plots</h1>
 
   {% if not cultivation_plots or cultivation_plots|length == 0 %}
-  
+
   <p class="mb-4">It looks like there are no cultivation plots to show here.</p>
 
   <form action="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
@@ -35,12 +35,12 @@ Cultivation plots
       <div class="row">
         <div class="col-4">
           <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
-          
+
           <img class="img-fluid my-1" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from the soil">
 
           <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
         </div>
-      
+
         <div class="col-8 d-flex flex-column align-items-end justify-content-between">
           <table class="table table-sm">
             <tbody>
@@ -58,17 +58,17 @@ Cultivation plots
               </tr>
             </tbody>
           </table>
-          
-          <a href="#">View details</a>
+
+          <a href="{{ url_for('cultivation_plots.cultivation_plot', id=cultivation_plot.id) }}">View details</a>
         </div>
 
       </div>
     </div>
-      
+
     {% endfor %}
 
   </div>
-  
+
   {% endif %}
 
 </main>
