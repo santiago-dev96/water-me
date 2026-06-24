@@ -18,13 +18,17 @@ Login
       <label for="password" class="form-label">Username</label>
 
       {% if form %}
-        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control" value="{{ form['username'] }}">
+        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control" value="{{ form.get('username', '') }}">
       {% else %}
         <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
       {% endif %}
     </div>
 
-    {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
+    {% if form %}
+      {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5, value=form.get('password', '')) }}
+    {% else %}
+      {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
+    {% endif %}
 
     <div class="d-grid">
       <button type="submit" class="btn btn-primary">Login</button>

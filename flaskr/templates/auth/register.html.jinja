@@ -1,5 +1,7 @@
 {% extends "layout.html.jinja" %}
 
+{% import 'auth/macros.html.jinja' as macros %}
+
 {% block title %}
 
 Register
@@ -26,34 +28,17 @@ Register
       {% endif %}
     </div>
 
-    <div class="mb-3">
-      <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+    {% if form %}
+      {{ macros.password_input('password', 'password', 'Password <span class="text-danger">*</span>', value=form.get('password', '')) }}
+    {% else %}
+      {{ macros.password_input('password', 'password', 'Password <span class="text-danger">*</span>') }}
+    {% endif %}
 
-      {% if form %}
-
-      <input value="{{ form.get('password', '') }}" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
-
-      {% else %}
-
-      <input type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control">
-
-      {% endif %}
-    </div>
-
-    <div class="mb-5">
-      <label for="password_confirmation" class="form-label">Password confirmation <span class="text-danger">*</span></label>
-
-      {% if form %}
-
-      <input value="{{ form.get('password_confirmation', '') }}" type="password" name="password_confirmation" 
-      id="password_confirmation" required minlength="12" maxlength="32" class="form-control">
-
-      {% else %}
-
-      <input type="password" name="password_confirmation" id="password_confirmation" required minlength="12" maxlength="32" class="form-control">
-
-      {% endif %}
-    </div>
+    {% if form %}
+      {{ macros.password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5, value=form.get('password_confirmation', '')) }}
+    {% else %}
+      {{ macros.password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5) }}
+    {% endif %}
 
     <div class="d-grid">
       <button type="submit" class="btn btn-primary">Register</button>

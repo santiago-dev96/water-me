@@ -1,14 +1,10 @@
-{% macro password_input(name, id, label, autocomplete="off", mb=3) -%}
+{% macro password_input(name, id, label, autocomplete="off", mb=3, value='') -%}
   <div class="mb-{{ mb }}">
       <label for="{{ id }}" class="form-label">{{ label }}</label>
 
       <div class="input-group">
 
-        {% if form %}
-          <input autocomplete="{{ autocomplete }}" type="password" name="{{ name }}" id="{{ id }}" required minlength="12" maxlength="32" class="form-control" aria-describedby="{{ name }}-show-password" value="{{ form[name] }}">
-        {% else %}
-          <input autocomplete="{{ autocomplete }}"" type="password" name="{{ name }}" id="{{ id }}" required minlength="12" maxlength="32" class="form-control" aria-describedby="{{ name }}-show-password">
-        {% endif %}
+        <input autocomplete="{{ autocomplete }}" type="password" name="{{ name }}" id="{{ id }}" required minlength="12" maxlength="32" class="form-control" aria-describedby="{{ name }}-show-password" value="{{ value }}">
 
         <button class="btn btn-secondary" type="button" id="{{ name }}-show-password" data-mode="hidden">
           <span id="{{ name }}-eye">
@@ -22,13 +18,12 @@
       </div>
 
       <script>
-        const eyeIcon = document.getElementById('{{ name }}-eye')
-        const eyeSlashIcon = document.getElementById('{{ name }}-eye-slash')
-        const passwordInput = document.getElementById('{{ id }}')
-
         document
           .getElementById('{{ name }}-show-password')
           .addEventListener('click', (event) => {
+            const eyeIcon = document.getElementById('{{ name }}-eye')
+            const eyeSlashIcon = document.getElementById('{{ name }}-eye-slash')
+            const passwordInput = document.getElementById('{{ id }}')
             const btn = event.currentTarget
             if (btn.dataset.mode === 'hidden') {
               eyeIcon.style.display = 'none'
