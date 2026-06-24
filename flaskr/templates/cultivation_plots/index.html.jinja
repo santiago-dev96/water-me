@@ -10,20 +10,18 @@ Cultivation plots
 
 <main>
 
+  <form action="{{ url_for('cultivation_plots.new_cultivation_plot') }}" class="d-flex justify-content-center mb-5">
+    <button type="submit" class="btn btn-lg btn-outline-primary d-flex align-items-center">
+      {% include "svgs/plus_icon.html.jinja" %}
+      <span class="ms-2">Create a cultivation plot</span>
+    </button>
+  </form>
+
   <h1 class="mb-5 text-center">Your cultivation plots</h1>
 
   {% if not cultivation_plots or cultivation_plots|length == 0 %}
 
   <p class="mb-4">It looks like there are no cultivation plots to show here.</p>
-
-  <form action="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
-    <div class="d-grid">
-      <button type="submit" class="btn btn-primary">
-        {% include "svgs/plus_icon.html.jinja" %}
-        <span>&nbsp;Create a cultivation plot</span>
-      </button>
-    </div>
-  </form>
 
   {% else %}
 
