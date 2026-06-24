@@ -47,10 +47,10 @@
             </li>
           </ul>
 
-          <form class="d-flex" method="POST" action="{{ url_for('auth.logout') }}">
-            <button type="submit" class="btn btn-secondary btn-sm">
+          <form method="POST" action="{{ url_for('auth.logout') }}">
+            <button type="submit" class="btn btn-outline-danger d-flex align-items-center">
               {% include "svgs/exit.html.jinja" %}
-              <span>&nbsp;Sign out</span>
+              <span class="ms-2">Sign out</span>
             </button>
           </form>
 
