@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout.html.jinja" %}
 
 {% block title %}
 
@@ -19,7 +19,7 @@ Cultivation plots
   <form action="{{ url_for('cultivation_plots.new_cultivation_plot') }}">
     <div class="d-grid">
       <button type="submit" class="btn btn-primary">
-        {% include "svgs/plus_icon.html" %}
+        {% include "svgs/plus_icon.html.jinja" %}
         <span>&nbsp;Create a cultivation plot</span>
       </button>
     </div>

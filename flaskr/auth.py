@@ -18,23 +18,23 @@ def register():
     # Render the sign-up form.
 
     if request.method == "GET":
-        return render_template("auth/register.html")
-    
+        return render_template("auth/register.html.jinja")
+
     # Validate the username
-    
+
     username = request.form.get('username')
     if not username:
         flash('The username is required', 'danger')
-        return render_template('auth/register.html', form=request.form), 400
+        return render_template('auth/register.html.jinja', form=request.form), 400
     if username.strip() == '':
         flash('The username is just whitespace', 'danger')
-        return render_template('auth/register.html', form=request.form), 400
+        return render_template('auth/register.html.jinja', form=request.form), 400
     if len(username) < 3:
         flash('The length of the username must be greater than 3', 'danger')
-        return render_template('auth/register.html', form=request.form), 400
+        return render_template('auth/register.html.jinja', form=request.form), 400
     if len(username) > 50:
         flash('The length of the username must be less than 50', 'danger')
-        return render_template('auth/register.html', form=request.form), 400
+        return render_template('auth/register.html.jinja', form=request.form), 400
 
     # Get the password, it should contain at least 1 digit, 1 letter,
     # a special character and that the password confirmation is equal
@@ -44,32 +44,32 @@ def register():
     password = request.form.get("password")
     if not password:
         flash("The password is required", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if len(password) < 12:
         flash("The length of the password must be at least 12 characters", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if len(password) > 32:
         flash("The length of the password must be at most 32 characters", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if not re.search(r"\d", password):
         flash("The password must have at least one number", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if not re.search(r"[a-z]", password):
         flash("The password must have at least one lowercase letter", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if not re.search(r"[A-Z]", password):
         flash("The password must have at least one uppercase letter", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if not re.search(r"[^a-zA-Z0-9\s]", password):
         flash("The password must have at least one special character", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     password_confirmation = request.form.get("password_confirmation")
     if not password_confirmation:
         flash("The password confirmation is required", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if password != password_confirmation:
         flash("The password and the password confirmation must be equal", "danger")
-        return render_template("auth/register.html", form=request.form), 400
+        return render_template("auth/register.html.jinja", form=request.form), 400
 
     # Now save the user in the database.
 
@@ -95,7 +95,7 @@ def login():
     # Render the login form.
 
     if request.method == "GET":
-        return render_template("auth/login.html")
+        return render_template("auth/login.html.jinja")
 
     # Logs in the user if the credentials are correct.
 
@@ -108,12 +108,12 @@ def login():
     username = request.form.get("username")
     if not username:
         flash("Missing username", "danger")
-        return render_template("auth/login.html"), 400
+        return render_template("auth/login.html.jinja"), 400
 
     password = request.form.get("password")
     if not password:
         flash("Missing password", "danger")
-        return render_template("auth/login.html"), 400
+        return render_template("auth/login.html.jinja"), 400
 
     # Now try to get the user and update the session.
 
@@ -126,10 +126,10 @@ def login():
     cursor.close()
     if not some_user:
         flash("Invalid username", "danger")
-        return render_template("auth/login.html", form=request.form), 401
+        return render_template("auth/login.html.jinja", form=request.form), 401
     if not check_password_hash(some_user["password_hash"], password):
         flash("Invalid password", "danger")
-        return render_template("auth/login.html", form=request.form), 401
+        return render_template("auth/login.html.jinja", form=request.form), 401
     session["user_id"] = some_user["id"]
     flash("You're logged in.", "success")
     if "redirect_to" in request.args:
