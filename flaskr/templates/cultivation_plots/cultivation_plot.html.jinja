@@ -21,7 +21,7 @@ Cultivation plot > {{ cultivation_plot.name }}
 
   <div class="col-7">
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><a href="#">Log operation</a></li>
+      <li class="list-group-item"><a href="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">Log operation</a></li>
       <li class="list-group-item"><a href="#">View operation history</a></li>
     </ul>
   </div>

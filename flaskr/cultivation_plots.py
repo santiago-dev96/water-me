@@ -73,3 +73,16 @@ def cultivation_plot(id):
         return abort(404)
     else:
         return render_template('cultivation_plots/cultivation_plot.html.jinja', cultivation_plot=cultivation_plot)
+
+
+@bp.route('/cultivation_plots/<int:id>/log_operation', methods=["GET"])
+@login_required
+def log_cultivation_plot_operation(id):
+    db = get_db()
+    cursor = db.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
+    cultivation_plot = cursor.fetchone()
+    cursor.close()
+    if not cultivation_plot:
+        return abort(404)
+    else:
+        return render_template('cultivation_plots/log_cultivation_plot_operation.html.jinja', cultivation_plot=cultivation_plot)
