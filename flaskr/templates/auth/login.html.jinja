@@ -1,4 +1,6 @@
-{% extends "layout.html" %}
+{% extends "layout.html.jinja" %}
+
+{% import 'auth/macros.html.jinja' as macros %}
 
 {% block title %}
 
@@ -22,57 +24,7 @@ Login
       {% endif %}
     </div>
 
-    <div class="mb-5">
-      <label for="password" class="form-label">Password</label>
-
-      <div class="input-group">
-
-        {% if form %}
-          <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control" aria-describedby="show-password" value="{{ form['password'] }}">
-        {% else %}
-          <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control" aria-describedby="show-password">
-        {% endif %}
-
-        <button class="btn btn-secondary" type="button" id="show-password" data-mode="hidden">
-          <span id="eye">
-            {% include "svgs/eye.html" %}
-          </span>
-          <span id="eye-slash" style="display:none;">
-            {% include "svgs/eye_slash.html" %}
-          </span>
-        </button>
-
-      </div>
-
-      <script>
-        const eyeIcon = document.getElementById('eye')
-        const eyeSlashIcon = document.getElementById('eye-slash')
-        const passwordInput = document.getElementById('password')
-
-        document
-          .getElementById('show-password')
-          .addEventListener('click', (event) => {
-            const btn = event.currentTarget
-            if (btn.dataset.mode === 'hidden') {
-              eyeIcon.style.display = 'none'
-              eyeSlashIcon.style.display = 'inline'
-              btn.dataset.mode = 'visible'
-              passwordInput.setAttribute('type', 'text')
-            } else if (btn.dataset.mode = 'visible') {
-              eyeSlashIcon.style.display = 'none'
-              eyeIcon.style.display = 'inline'
-              btn.dataset.mode = 'hidden'
-              passwordInput.setAttribute('type', 'password')
-            } else {
-              console.warn(`Unexpected mode "${btn.dataset.mode}"`)
-              eyeSlashIcon.style.display = 'none'
-              eyeIcon.style.display = 'inline'
-              btn.dataset.mode = 'hidden'
-              passwordInput.setAttribute('type', 'password')
-            }
-          })
-      </script>
-    </div>
+    {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
 
     <div class="d-grid">
       <button type="submit" class="btn btn-primary">Login</button>
