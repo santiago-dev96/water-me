@@ -126,7 +126,7 @@ def login():
     cursor.close()
     if not some_user:
         flash("Invalid username", "danger")
-        return render_template("auth/login.html"), 500
+        return render_template("auth/login.html"), 401
     if not check_password_hash(some_user["password_hash"], password):
         flash("Invalid password", "danger")
         return render_template("auth/login.html"), 401
