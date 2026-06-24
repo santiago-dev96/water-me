@@ -14,7 +14,12 @@ Login
   <form method="POST" action="{{ url_for('auth.login') }}" class="p-4 border rounded">
     <div class="mb-3">
       <label for="password" class="form-label">Username</label>
-      <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+
+      {% if form %}
+        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control" value="{{ form['username'] }}">
+      {% else %}
+        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+      {% endif %}
     </div>
 
     <div class="mb-5">
@@ -22,7 +27,11 @@ Login
 
       <div class="input-group">
 
-        <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control" aria-describedby="show-password">
+        {% if form %}
+          <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control" aria-describedby="show-password" value="{{ form['password'] }}">
+        {% else %}
+          <input autocomplete="current-password" type="password" name="password" id="password" required minlength="12" maxlength="32" class="form-control" aria-describedby="show-password">
+        {% endif %}
 
         <button class="btn btn-secondary" type="button" id="show-password" data-mode="hidden">
           <span id="eye">

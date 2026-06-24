@@ -126,10 +126,10 @@ def login():
     cursor.close()
     if not some_user:
         flash("Invalid username", "danger")
-        return render_template("auth/login.html"), 401
+        return render_template("auth/login.html", form=request.form), 401
     if not check_password_hash(some_user["password_hash"], password):
         flash("Invalid password", "danger")
-        return render_template("auth/login.html"), 401
+        return render_template("auth/login.html", form=request.form), 401
     session["user_id"] = some_user["id"]
     flash("You're logged in.", "success")
     if "redirect_to" in request.args:
