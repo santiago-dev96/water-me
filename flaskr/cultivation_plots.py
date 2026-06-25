@@ -75,7 +75,7 @@ def cultivation_plot(id):
         return render_template('cultivation_plots/cultivation_plot.html.jinja', cultivation_plot=cultivation_plot)
 
 
-@bp.route('/cultivation_plots/<int:id>/log_operation', methods=["GET"])
+@bp.route('/cultivation_plots/<int:id>/log_operation', methods=["GET", "POST"])
 @login_required
 def log_cultivation_plot_operation(id):
     db = get_db()
@@ -84,5 +84,31 @@ def log_cultivation_plot_operation(id):
     cursor.close()
     if not cultivation_plot:
         return abort(404)
-    else:
+    elif request.method == 'GET':
         return render_template('cultivation_plots/log_cultivation_plot_operation.html.jinja', cultivation_plot=cultivation_plot)
+    else:
+        number_of_plants = request.form.get('number_of_plants', 0)
+        try:
+            number_of_plants = int(number_of_plants)
+        except ValueError:
+            flash('The number of plants must be a whole number', 'danger')
+            return render_template('cultivation_plots/log_cultivation_plot_operation.html.jinja', cultivation_plot=cultivation_plot), 400
+        water_spent = request.form.get('water_spent', 0.0)
+        try:
+            water_spent = float(water_spent)
+        except ValueError:
+            flash('The amount of water must be a number greater than zero', 'danger')
+            return render_template('cultivation_plots/log_cultivation_plot_operation.html.jinja', cultivation_plot=cultivation_plot), 400
+        harvest = request.form.get('harvest', 0.0)
+        try:
+            harvest = float(harvest)
+        except ValueError:
+            flash('The harvest must be a number greater than zero', 'danger')
+            return render_template('cultivation_plots/log_cultivation_plot_operation.html.jinja', cultivation_plot=cultivation_plot), 400
+        cursor = db.execute('INSERT INTO operations (number_of_plants, water_spent, harvest, cultivation_plot_id) VALUES (?, ?, ?, ?)', (number_of_plants, water_spent, harvest, id))
+        cursor.close()
+        cursor = db.execute('UPDATE cultivation_plots SET number_of_plants = ?, water_spent = ?, harvest = ? WHERE id = ?', (cultivation_plot['number_of_plants'] + number_of_plants, cultivation_plot['water_spent'] + water_spent, cultivation_plot['harvest'] + harvest, id))
+        cursor.close()
+        db.commit()
+        flash('Operation successfully logged', 'success')
+        return redirect(url_for('cultivation_plots.cultivation_plot', id=id))
