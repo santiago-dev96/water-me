@@ -1,6 +1,6 @@
 {% extends "layout.html.jinja" %}
 
-{% import 'macros.html.jinja' as macros %}
+{% import 'cultivation_plots/macros.html.jinja' as macros %}
 
 {% block title %}
 
@@ -10,21 +10,17 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
 
 {% block content %}
 
-<main>
+{{ macros.cultivation_plot_header(cultivation_plot) }}
 
-  <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
-  <div class="w-25 mx-auto">
-    {{ macros.dirt_cube() }}
-  </div>
-  <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
+<main class="mt-4">
 
-  <h1 class="text-center my-4">Log operation</h1>
+  <h2 class="mb-3 text-center">Log operation</h2>
 
-  <form class="border rounded p-4" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
+  <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
 
     <div class="mb-3">
       <label class="form-label" for="number_of_plants">Number of plants</label>
-      <input class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants" value="0">
+      <input autofocus class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants" value="0">
       <div id="number_of_plants_help" class="form-text">Negative numbers are allowed</div>
     </div>
 
@@ -43,5 +39,9 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
     </div>
   </form>
 </main>
+
+<script>
+  document.getElementById('number_of_plants').scrollIntoView()
+</script>
 
 {% endblock %}

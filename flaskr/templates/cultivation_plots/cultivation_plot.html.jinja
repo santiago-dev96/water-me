@@ -1,6 +1,6 @@
 {% extends "layout.html.jinja" %}
 
-{% import 'macros.html.jinja' as macros %}
+{% import 'cultivation_plots/macros.html.jinja' as macros %}
 
 {% block title %}
 
@@ -10,44 +10,27 @@ Cultivation plot > {{ cultivation_plot.name }}
 
 {% block content %}
 
-<h1 class="text-center mb-4">{{ cultivation_plot.name }}</h1>
+{{ macros.cultivation_plot_header(cultivation_plot) }}
 
-<div class="row">
-  <div class="col-5">
-    {{ macros.dirt_cube('m3-3') }}
+<main class="mt-4">
+  <h2 class="text-center">Status</h2>
 
-    <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
-  </div>
-
-  <div class="col-7">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><a href="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">Log operation</a></li>
-      <li class="list-group-item"><a href="#">View operation history</a></li>
-    </ul>
-  </div>
-</div>
-
-<table class="table mt-5">
-  <tbody>
-    <tr>
-      <th scope="row">Plants</th>
-      <td>{{ cultivation_plot.number_of_plants }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Water spent (L)</th>
-      <td>{{ cultivation_plot.water_spent }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Harvest (kg)</th>
-      <td>{{ cultivation_plot.harvest }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="mt-5 d-flex justify-content-end">
-  <button class="btn btn-danger d-flex align-items-center">
-    {% include 'svgs/trash_icon.html.jinja' %} <span class="ms-2">Delete</span>
-  </button>
-</div>
+  <table class="table mt-3">
+    <tbody>
+      <tr>
+        <th scope="row">Plants</th>
+        <td>{{ cultivation_plot.number_of_plants }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Water spent (L)</th>
+        <td>{{ cultivation_plot.water_spent }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Harvest (kg)</th>
+        <td>{{ cultivation_plot.harvest }}</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
 
 {% endblock %}
