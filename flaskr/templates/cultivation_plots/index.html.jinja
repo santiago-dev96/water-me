@@ -50,11 +50,11 @@ Cultivation plots
               </tr>
               <tr>
                 <th scope="row">Water spent (L)</th>
-                <td>{{ cultivation_plot.water_spent }}</td>
+                <td>{{ cultivation_plot.water_spent|round(2) }}</td>
               </tr>
               <tr>
                 <th scope="row">Harvest (kg)</th>
-                <td>{{ cultivation_plot.harvest }}</td>
+                <td>{{ cultivation_plot.harvest|round(2) }}</td>
               </tr>
             </tbody>
           </table>
