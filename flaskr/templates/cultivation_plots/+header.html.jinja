@@ -1,14 +1,14 @@
-{% import 'macros.html.jinja' as macros %}
+{% from '+dirt_cube.html.jinja' import dirt_cube  %}
 
-{% macro cultivation_plot_header(cultivation_plot) -%}
+{% macro header(cultivation_plot) -%}
   <header class="row">
     <div class="col-6">
       <h1 class="text-center mb-2">{{ cultivation_plot.name }}</h1>
-      {{ macros.dirt_cube('m3-3') }}
+      {{ dirt_cube('m3-3') }}
       <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
     </div>
     <div class="col-6 d-flex flex-column justify-content-center">
-      {% include 'cultivation_plots/cultivation_plot_nav.html.jinja' %}
+      {% include 'cultivation_plots/_nav.html.jinja' %}
       <hr>
       <form id="delete-form">
         <div class="d-grid">

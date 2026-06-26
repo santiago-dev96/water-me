@@ -1,6 +1,6 @@
 {% extends "layout.html.jinja" %}
 
-{% import 'auth/macros.html.jinja' as macros %}
+{% from 'auth/+password_input.html.jinja' import password_input %}
 
 {% block title %}
 
@@ -25,9 +25,9 @@ Login
     </div>
 
     {% if form %}
-      {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5, value=form.get('password', '')) }}
+      {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5, value=form.get('password', '')) }}
     {% else %}
-      {{ macros.password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
+      {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
     {% endif %}
 
     <div class="d-grid">

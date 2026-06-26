@@ -1,6 +1,6 @@
 {% extends "layout.html.jinja" %}
 
-{% import 'cultivation_plots/macros.html.jinja' as macros %}
+{% from 'cultivation_plots/+header.html.jinja' import header %}
 
 {% block title %}
 
@@ -10,7 +10,7 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
 
 {% block content %}
 
-{{ macros.cultivation_plot_header(cultivation_plot) }}
+{{ header(cultivation_plot) }}
 
 <main class="mt-4">
 
