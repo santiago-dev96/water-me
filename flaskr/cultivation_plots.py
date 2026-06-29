@@ -55,9 +55,12 @@ def new_cultivation_plot():
 
     db = get_db()
     user_id = g.user['id']
-    cursor = db.execute('INSERT INTO cultivation_plots (name, crop, number_of_plants, user_id) VALUES (?, ?, ?, ?)', (name, crop, number_of_plants, user_id))
-    cursor.close()
+    cursor = db.cursor()
+    cursor.execute('INSERT INTO cultivation_plots (name, crop, number_of_plants, user_id) VALUES (?, ?, ?, ?)', (name, crop, number_of_plants, user_id))
+    cultivation_plot_id = cursor.lastrowid
+    cursor.execute('INSERT INTO operations (number_of_plants, water_spent, harvest, cultivation_plot_id) VALUES (?, ?, ?, ?)', (number_of_plants, 0, 0, cultivation_plot_id))
     db.commit()
+    cursor.close()
 
     return redirect(url_for('cultivation_plots.index'))
 
@@ -118,7 +121,12 @@ def log_cultivation_plot_operation(id):
 @login_required
 def cultivation_plot_operations(id):
     db = get_db()
-    cursor = db.execute('SELECT * FROM operations WHERE cultivation_plot_id = ?', (id,))
+    cursor = db.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
+    cultivation_plot = cursor.fetchone()
+    cursor.close()
+    if not cultivation_plot:
+        return abort(404)
+    cursor = db.execute('SELECT * FROM operations WHERE cultivation_plot_id = ? ORDER BY created_at DESC', (id,))
     operations = cursor.fetchall()
     cursor.close()
-    return render_template('cultivation_plots/operations.html.jinja', operations=operations)
+    return render_template('cultivation_plots/operations.html.jinja', cultivation_plot=cultivation_plot, operations=operations)
