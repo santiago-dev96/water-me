@@ -69,13 +69,16 @@ def new_cultivation_plot():
 @login_required
 def cultivation_plot(id):
     db = get_db()
-    cursor = db.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
     cultivation_plot = cursor.fetchone()
-    cursor.close()
     if not cultivation_plot:
+        cursor.close()
         return abort(404)
-    else:
-        return render_template('cultivation_plots/status.html.jinja', cultivation_plot=cultivation_plot)
+    cursor.execute('SELECT * FROM operations WHERE cultivation_plot_id = ? ORDER BY created_at ASC', (id,))
+    operations = cursor.fetchall()
+    cursor.close()
+    return render_template('cultivation_plots/status.html.jinja', cultivation_plot=cultivation_plot, operations=[dict(op) for op in operations])
 
 
 @bp.route('/cultivation_plots/<int:id>/log_operation', methods=["GET", "POST"])

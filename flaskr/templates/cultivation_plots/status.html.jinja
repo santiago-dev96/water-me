@@ -10,6 +10,7 @@ Cultivation plot > {{ cultivation_plot.name }}
 
 {% block scripts %}
 
+<script src="{{ url_for('static', filename='chart.js') }}"></script>
 <script src="{{ url_for('static', filename='format-numbers.js') }}" defer></script>
 
 {% endblock %}
@@ -19,6 +20,7 @@ Cultivation plot > {{ cultivation_plot.name }}
 {{ header(cultivation_plot) }}
 
 <main class="mt-4">
+
   <h2 class="text-center">Status</h2>
 
   <table class="table mt-3">
@@ -37,6 +39,127 @@ Cultivation plot > {{ cultivation_plot.name }}
       </tr>
     </tbody>
   </table>
+
+  <h3 class="text-center mt-4 mb-2">Harvest trends</h3>
+
+  <div>
+    <canvas id="harvest-chart"></canvas>
+  </div>
+
+  <h3 class="text-center mt-4 mb-2">Water expenditure trends</h3>
+
+  <div>
+    <canvas id="water-spent-chart"></canvas>
+  </div>
+
+  <h3 class="text-center mt-4 mb-2">Trends in number of plants</h3>
+
+  <div>
+    <canvas id="number-of-plants-chart"></canvas>
+  </div>
+
 </main>
+
+<script>
+
+const operations = {{ operations | tojson }}
+const waterSpentCtx = document.getElementById('water-spent-chart')
+const numberOfPlantsCtx = document.getElementById('number-of-plants-chart')
+const harvestCtx = document.getElementById('harvest-chart')
+
+// Harvest chart
+
+new Chart(harvestCtx, {
+  type: 'line',
+  data: {
+    labels: [...new Set(operations.filter(op => op.harvest > 0).map(op => op.created_at.split(' ')[0]))],
+    datasets: [{
+      data: operations.filter(op => op.harvest > 0).map(op => op.harvest),
+      borderColor: '#fd7e14'
+    }]
+  },
+  options: {
+    locale: 'en-US',
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        enabled: false
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: v => `${v} kg`
+        }
+      }
+    }
+  }
+})
+
+// Water spent chart
+
+new Chart(waterSpentCtx, {
+  type: 'line',
+  data: {
+    labels: operations.map(op => op.created_at.split(' ')[0]),
+    datasets: [{
+      data: operations.map(op => op.water_spent),
+      borderColor: '#6f42c1'
+    }]
+  },
+  options: {
+    locale: 'en-US',
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        enabled: false
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: v => `${v} L`
+        }
+      }
+    }
+  }
+})
+
+// Number of plants chart
+
+new Chart(numberOfPlantsCtx, {
+  type: 'line',
+  data: {
+    labels: operations.map(op => op.created_at.split(' ')[0]),
+    datasets: [{
+      data: operations.map(op => op.number_of_plants),
+      borderColor: '#0d6efd'
+    }]
+  },
+  options: {
+    locale: 'en-US',
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        enabled: false
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+})
+
+</script>
 
 {% endblock %}
