@@ -1,0 +1,38 @@
+{% extends "layout.html.jinja" %}
+
+{% from 'cultivation_plots/+header.html.jinja' import header %}
+
+{% block title %}
+
+Cultivation plot > {{ cultivation_plot.name }} > Edit
+
+{% endblock %}
+
+{% block content %}
+
+{{ header(cultivation_plot) }}
+
+<main class="mt-4">
+
+  <h2 class="mb-3 text-center">Edit cultivation plot</h2>
+
+  <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.edit_cultivation_plot', id=cultivation_plot['id']) }}">
+
+    <div class="mb-3">
+      <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
+      <input autofocus class="form-control" type="text" name="name" id="name" value="{{ cultivation_plot.name }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="crop">Crop <span class="text-danger">*</span></label>
+      <input class="form-control" type="text" value="{{ cultivation_plot.crop }}" name="crop" id="crop" required>
+      <div id="crop-help" class="form-text">Carrot, banana, potato, tomato, etc.</div>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Edit</button>
+    </div>
+  </form>
+</main>
+
+{% endblock %}

@@ -130,3 +130,31 @@ def cultivation_plot_operations(id):
     operations = cursor.fetchall()
     cursor.close()
     return render_template('cultivation_plots/operations.html.jinja', cultivation_plot=cultivation_plot, operations=operations)
+
+
+@bp.route('/cultivation_plots/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_cultivation_plot(id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
+    cultivation_plot = cursor.fetchone()
+    if not cultivation_plot:
+        cursor.close()
+        return abort(404)
+    if request.method == 'GET':
+        cursor.close()
+        return render_template('cultivation_plots/edit.html.jinja', cultivation_plot=cultivation_plot)
+    name = request.form.get('name')
+    if not name or name.strip() == '':
+        flash('The name is required', 'danger')
+        return render_template('cultivation_plots/edit.html.jinja', cultivation_plot=cultivation_plot, form=request.form), 400
+    crop = request.form.get('crop')
+    if not crop or crop.strip() == '':
+        flash('The crop is required', 'danger')
+        return render_template('cultivation_plots/edit.html.jinja', cultivation_plot=cultivation_plot, form=request.form), 400
+    cursor.execute('UPDATE cultivation_plots SET name = ?, crop = ? WHERE id = ?', (name, crop, id))
+    db.commit()
+    cursor.close()
+    flash('Edited succesfully', 'success')
+    return redirect(url_for('cultivation_plots.cultivation_plot', id=id))
