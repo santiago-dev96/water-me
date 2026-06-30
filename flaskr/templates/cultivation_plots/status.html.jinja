@@ -67,15 +67,44 @@ const waterSpentCtx = document.getElementById('water-spent-chart')
 const numberOfPlantsCtx = document.getElementById('number-of-plants-chart')
 const harvestCtx = document.getElementById('harvest-chart')
 
+// We need to group operations per day, not per timestamp.
+// It is important to add up the values for a day, otherwise
+// we'll not see the real data. Don't forget that the operations
+// are already sorted, using a map or an object won't work, since
+// you'll mess-up the order.
+
+const opsPerDay = operations.reduce((acc, cur) => {
+
+  // We try to find an operation on the same day.
+
+  const op = acc.find((el) => el.created_at === cur.created_at.split(' ')[0])
+
+  if (op) {
+
+    // If we have an operation on the same day, we
+    // add the current operation metrics to it.
+
+    op.number_of_plants += cur.number_of_plants
+    op.harvest += cur.harvest
+    op.water_spent += cur.water_spent
+
+    return acc
+  } else {
+    acc.push({...cur, created_at: cur.created_at.split(' ')[0]})
+
+    return acc
+  }
+}, [])
+
 // Harvest chart
 
 new Chart(harvestCtx, {
-  type: 'line',
+  type: 'bar',
   data: {
-    labels: [...new Set(operations.filter(op => op.harvest > 0).map(op => op.created_at.split(' ')[0]))],
+    labels: opsPerDay.filter(op => op.harvest > 0).map(op => op.created_at),
     datasets: [{
-      data: operations.filter(op => op.harvest > 0).map(op => op.harvest),
-      borderColor: '#fd7e14'
+      data: opsPerDay.filter(op => op.harvest > 0).map(op => op.harvest),
+      backgroundColor: '#fd7e14'
     }]
   },
   options: {
@@ -102,12 +131,12 @@ new Chart(harvestCtx, {
 // Water spent chart
 
 new Chart(waterSpentCtx, {
-  type: 'line',
+  type: 'bar',
   data: {
-    labels: operations.map(op => op.created_at.split(' ')[0]),
+    labels: opsPerDay.filter(op => op.water_spent > 0).map(op => op.created_at),
     datasets: [{
-      data: operations.map(op => op.water_spent),
-      borderColor: '#6f42c1'
+      data: opsPerDay.filter(op => op.water_spent > 0).map(op => op.water_spent),
+      backgroundColor: '#6f42c1'
     }]
   },
   options: {
@@ -136,11 +165,19 @@ new Chart(waterSpentCtx, {
 new Chart(numberOfPlantsCtx, {
   type: 'line',
   data: {
-    labels: operations.map(op => op.created_at.split(' ')[0]),
-    datasets: [{
-      data: operations.map(op => op.number_of_plants),
-      borderColor: '#0d6efd'
-    }]
+    labels: opsPerDay.filter(op => op.number_of_plants != 0).map(op => op.created_at.split(' ')[0]),
+    datasets: [
+      {
+        data: opsPerDay.filter(op => op.number_of_plants != 0).map((op, i, arr) => {
+          if (arr[i-1]) {
+            return arr[i-1].number_of_plants + op.number_of_plants
+          } else {
+            return op.number_of_plants
+          }
+        }),
+        borderColor: '#0d6efd'
+      }
+    ]
   },
   options: {
     locale: 'en-US',
