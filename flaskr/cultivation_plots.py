@@ -161,3 +161,19 @@ def edit_cultivation_plot(id):
     cursor.close()
     flash('Edited succesfully', 'success')
     return redirect(url_for('cultivation_plots.cultivation_plot', id=id))
+
+
+@bp.route('/cultivation_plots/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_cultivation_plot(id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM cultivation_plots WHERE id = ?', (id,))
+    cultivation_plot = cursor.fetchone()
+    if not cultivation_plot:
+        cursor.close()
+        return abort(404)
+    cursor.execute('DELETE FROM cultivation_plots WHERE id = ?', (id,))
+    db.commit()
+    cursor.close()
+    return redirect(url_for('cultivation_plots.index'))
