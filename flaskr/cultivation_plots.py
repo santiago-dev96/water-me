@@ -173,6 +173,7 @@ def delete_cultivation_plot(id):
     if not cultivation_plot:
         cursor.close()
         return abort(404)
+    cursor.execute('PRAGMA foreign_keys = ON')
     cursor.execute('DELETE FROM cultivation_plots WHERE id = ?', (id,))
     db.commit()
     cursor.close()
