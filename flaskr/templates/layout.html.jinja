@@ -43,6 +43,13 @@
               {% endif %}
             </li>
             <li class="nav-item">
+              {% if request.endpoint == 'auth.account' %}
+                <a class="nav-link active" aria-current="page" href="{{ url_for('auth.account', id=g.user.id) }}">Account</a>
+              {% else %}
+                <a class="nav-link" aria-current="page" href="{{ url_for('auth.account', id=g.user.id) }}">Account</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
               <a class="nav-link disabled" aria-disabled="true">Documentation</a>
             </li>
           </ul>
